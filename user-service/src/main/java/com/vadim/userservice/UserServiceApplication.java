@@ -1,14 +1,13 @@
-package com.vadim.apigateway;
+package com.vadim.userservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ApiGatewayApplication {
+public class UserServiceApplication {
 
     public static void main(String[] args) {
-        System.out.println("d");
-        SpringApplication.run(ApiGatewayApplication.class, args);
+        SpringApplication.run(UserServiceApplication.class, args);
     }
 
 }

@@ -1,14 +1,13 @@
-package com.vadim.apigateway;
+package com.vadim.newsservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ApiGatewayApplication {
+public class NewsServiceApplication {
 
     public static void main(String[] args) {
-        System.out.println("d");
-        SpringApplication.run(ApiGatewayApplication.class, args);
+        SpringApplication.run(NewsServiceApplication.class, args);
     }
 
 }
