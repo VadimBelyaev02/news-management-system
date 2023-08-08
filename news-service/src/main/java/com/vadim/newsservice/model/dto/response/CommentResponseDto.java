@@ -1,11 +1,18 @@
 package com.vadim.newsservice.model.dto.response;
 
-import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
+import java.time.OffsetDateTime;
+import java.util.UUID;
 
-public class CommentResponseDto {
-
-}
+@Builder
+public record CommentResponseDto(
+         Long id,
+         OffsetDateTime time,
+         String text,
+         String username,
+         UUID newsId
+) {}

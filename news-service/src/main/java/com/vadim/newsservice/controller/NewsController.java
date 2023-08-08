@@ -49,8 +49,31 @@ public class NewsController {
         NewsResponseDto newsResponseDto = service.save(newsRequestDto);
 
         return ApiResponse.created(
-                "News with id = " +newsResponseDto.
-        )
+                "News with id = " + newsResponseDto.id() + " was created",
+                NEWS_API_PATH,
+                newsResponseDto
+        );
     }
 
+    @PutMapping("/{newsId}")
+    public ResponseEntity<ApiResponse<NewsResponseDto>> putNews(@RequestBody @Valid NewsRequestDto newsRequestDto,
+                                                                @PathVariable UUID newsId) {
+        NewsResponseDto newsResponseDto = service.update(newsId, newsRequestDto);
+
+        return ApiResponse.ok(
+                "News with id = " + newsId + " was updated ",
+                NEWS_API_PATH,
+                newsResponseDto
+        );
+    }
+
+    @DeleteMapping("/{newsId}")
+    public ResponseEntity<ApiResponse<Void>> deleteNews(@PathVariable UUID newsId) {
+        service.deleteById(newsId);
+
+        return ApiResponse.noContent(
+                "News with id = " + newsId + " was deleted",
+                NEWS_API_PATH
+        );
+    }
 }

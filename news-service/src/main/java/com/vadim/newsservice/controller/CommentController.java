@@ -8,7 +8,9 @@ import com.vadim.newsservice.model.dto.response.PageResponse;
 import com.vadim.newsservice.service.CommentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -23,26 +25,47 @@ public class CommentController {
     private final CommentService service;
 
     @GetMapping("/{commentId}")
-    @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<CommentResponseDto> getComment(@PathVariable UUID commentId) {
+    public ResponseEntity<ApiResponse<CommentResponseDto>> getComment(@PathVariable UUID commentId) {
+        CommentResponseDto commentResponseDto = service.getById(commentId);
 
+        return ApiResponse.ok(
+                "Comment with id = " + commentId,
+                COMMENT_API_PATH,
+                commentResponseDto
+        );
     }
 
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<PageResponse<CommentResponseDto>> getAllComments() {
+    public ResponseEntity<ApiResponse<PageResponse<CommentResponseDto>>> getAllComments(Pageable pageable) {
+        PageResponse<CommentResponseDto> commentResponseDtoPage = service.getAll(pageable);
 
-    }
+        return ApiResponse.ok(
+                "All comments",
+                COMMENT_API_PATH,
+                commentResponseDtoPage
+        );
+     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponse<CommentResponseDto> postComments(@RequestBody @Valid CommentRequestDto requestDto) {
+    public ResponseEntity<ApiResponse<CommentResponseDto>> postComments(@RequestBody @Valid CommentRequestDto commentRequestDto) {
+        CommentResponseDto commentResponseDto = service.save(commentRequestDto);
 
+        return ApiResponse.created(
+                "Comment with id = " + commentResponseDto.id() + " was created",
+                COMMENT_API_PATH,
+                commentResponseDto
+        );
     }
 
     @PutMapping("/{commentId}")
-    public ApiResponse<CommentResponseDto> putComments(@RequestBody @Valid CommentRequestDto requestDto,
+    public ResponseEntity<ApiResponse<CommentResponseDto>> putComments(@RequestBody @Valid CommentRequestDto requestDto,
                                                        @PathVariable UUID commentId) {
+        CommentResponseDto commentResponseDto = service.update(commentId, requestDto);
 
+        return ApiResponse.ok(
+                "Comment with id = " + commentId + " was updated",
+                COMMENT_API_PATH,
+                commentResponseDto
+        );
     }
 }

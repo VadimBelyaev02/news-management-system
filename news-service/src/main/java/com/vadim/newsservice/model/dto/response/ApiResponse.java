@@ -52,4 +52,12 @@ public class ApiResponse<T> {
     ) {
         return of(message, path, HttpStatus.CREATED, body);
     }
+
+    public static <T> ResponseEntity<ApiResponse<T>> noContent(
+            final String message,
+            final String path
+    ) {
+        return of(message, path, HttpStatus.NO_CONTENT, null);
+    }
+
 }
