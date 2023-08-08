@@ -13,7 +13,6 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 @Table(name = "comment")
 @Entity
 public class Comment {
