@@ -10,6 +10,8 @@ import com.vadim.newsservice.model.mapper.CommentMapper;
 import com.vadim.newsservice.repository.CommentRepository;
 import com.vadim.newsservice.service.CommentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,8 +39,19 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional(readOnly = true)
-    public PageResponse<CommentResponseDto> getAll(Pageable pageable) {
-        List<CommentResponseDto> comments = repository.findAll(pageable).stream()
+    public PageResponse<CommentResponseDto> getAll(Pageable pageable, CommentCriteria criteria) {
+        Comment searchComment = new Comment();
+        searchComment.setText(criteria.getText());
+        searchComment.setUsername(criteria.getUsername());
+
+
+        ExampleMatcher matcher = ExampleMatcher.matchingAll()
+                .withIgnoreCase(true)
+                .withIgnoreNullValues();
+
+        Example<Comment> example = Example.of(searchComment, matcher);
+
+        List<CommentResponseDto> comments = repository.findAll(example, pageable).stream()
                 .map(mapper::toResponseDto)
                 .toList();
 

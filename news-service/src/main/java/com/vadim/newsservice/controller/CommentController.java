@@ -1,6 +1,7 @@
 package com.vadim.newsservice.controller;
 
 
+import com.vadim.newsservice.model.criteria.CommentCriteria;
 import com.vadim.newsservice.model.dto.request.CommentRequestDto;
 import com.vadim.newsservice.model.dto.response.ApiResponse;
 import com.vadim.newsservice.model.dto.response.CommentResponseDto;
@@ -9,7 +10,6 @@ import com.vadim.newsservice.service.CommentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,15 +36,17 @@ public class CommentController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<PageResponse<CommentResponseDto>>> getAllComments(Pageable pageable) {
-        PageResponse<CommentResponseDto> commentResponseDtoPage = service.getAll(pageable);
+    public ResponseEntity<ApiResponse<PageResponse<CommentResponseDto>>> getAllComments(Pageable pageable,
+                                                                                        @RequestBody(required = false) CommentCriteria commentCriteria) {
+        PageResponse<CommentResponseDto> commentResponseDtoPage = service.getAll(pageable, commentCriteria);
 
         return ApiResponse.ok(
                 "All comments",
                 COMMENT_API_PATH,
                 commentResponseDtoPage
         );
-     }
+    }
+
 
     @PostMapping
     public ResponseEntity<ApiResponse<CommentResponseDto>> postComments(@RequestBody @Valid CommentRequestDto commentRequestDto) {
@@ -59,13 +61,23 @@ public class CommentController {
 
     @PutMapping("/{commentId}")
     public ResponseEntity<ApiResponse<CommentResponseDto>> putComments(@RequestBody @Valid CommentRequestDto requestDto,
-                                                       @PathVariable UUID commentId) {
+                                                                       @PathVariable UUID commentId) {
         CommentResponseDto commentResponseDto = service.update(commentId, requestDto);
 
         return ApiResponse.ok(
                 "Comment with id = " + commentId + " was updated",
                 COMMENT_API_PATH,
                 commentResponseDto
+        );
+    }
+
+    @DeleteMapping("/{commentId}")
+    public ResponseEntity<ApiResponse<Void>> deleteComment(@PathVariable UUID commentId) {
+        service.deleteById(commentId);
+
+        return ApiResponse.noContent(
+                "Comment with id = " + commentId + " was deleted",
+                COMMENT_API_PATH
         );
     }
 }

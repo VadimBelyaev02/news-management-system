@@ -60,4 +60,11 @@ public class ApiResponse<T> {
         return of(message, path, HttpStatus.NO_CONTENT, null);
     }
 
+    public static <T> ResponseEntity<ApiResponse<T>> notFound(
+            final String message,
+            final String path
+    ) {
+        return of(message, path, HttpStatus.NOT_FOUND, null);
+    }
+
 }

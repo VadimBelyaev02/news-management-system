@@ -12,7 +12,7 @@ public interface CommentService {
 
     CommentResponseDto getById(UUID id);
 
-    PageResponse<CommentResponseDto> getAll(Pageable pageable);
+    PageResponse<CommentResponseDto> getAll(Pageable pageable, CommentCriteria criteria);
 
     PageResponse<CommentResponseDto> findAllByCriteria(CommentCriteria searchCriteria, Pageable pageable);
 
