@@ -12,6 +12,7 @@ import com.vadim.newsservice.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,7 +45,6 @@ public class CommentServiceImpl implements CommentService {
         searchComment.setText(criteria.getText());
         searchComment.setUsername(criteria.getUsername());
 
-
         ExampleMatcher matcher = ExampleMatcher.matchingAll()
                 .withIgnoreCase(true)
                 .withIgnoreNullValues();
@@ -55,18 +55,7 @@ public class CommentServiceImpl implements CommentService {
                 .map(mapper::toResponseDto)
                 .toList();
 
-        return PageResponse.<CommentResponseDto>builder()
-                .size(pageable.getPageSize())
-                .number(pageable.getPageNumber())
-                .elementsAmount(comments.size())
-                .content(comments)
-                .build();
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public PageResponse<CommentResponseDto> findAllByCriteria(CommentCriteria searchCriteria, Pageable pageable) {
-        return null;
+        return PageResponse.response(pageable, comments);
     }
 
     @Override

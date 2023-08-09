@@ -14,8 +14,6 @@ public interface NewsService {
 
     PageResponse<NewsResponseDto> getAll(Pageable pageable);
 
-    PageResponse<NewsResponseDto> getAllByCriteria(NewsCriteria searchCriteria, Pageable pageable);
-
     NewsResponseDto save(NewsRequestDto requestDto);
     NewsResponseDto update(UUID id, NewsRequestDto newsDtoRequest);
 

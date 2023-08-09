@@ -1,7 +1,6 @@
 package com.vadim.newsservice.service.impl;
 
 import com.vadim.newsservice.exception.NotFoundException;
-import com.vadim.newsservice.model.criteria.NewsCriteria;
 import com.vadim.newsservice.model.dto.request.NewsRequestDto;
 import com.vadim.newsservice.model.dto.response.NewsResponseDto;
 import com.vadim.newsservice.model.dto.response.PageResponse;
@@ -42,18 +41,7 @@ public class NewsServiceImpl implements NewsService {
                 .map(mapper::toResponseDto)
                 .toList();
 
-        return PageResponse.<NewsResponseDto>builder()
-                .number(pageable.getPageNumber())
-                .size(pageable.getPageSize())
-                .elementsAmount(newsResponseDtos.size())
-                .content(newsResponseDtos)
-                .build();
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public PageResponse<NewsResponseDto> getAllByCriteria(NewsCriteria searchCriteria, Pageable pageable) {
-        return null;
+        return PageResponse.response(pageable, newsResponseDtos);
     }
 
     @Override

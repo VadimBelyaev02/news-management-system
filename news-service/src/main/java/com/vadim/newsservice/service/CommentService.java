@@ -14,8 +14,6 @@ public interface CommentService {
 
     PageResponse<CommentResponseDto> getAll(Pageable pageable, CommentCriteria criteria);
 
-    PageResponse<CommentResponseDto> findAllByCriteria(CommentCriteria searchCriteria, Pageable pageable);
-
     CommentResponseDto save(CommentRequestDto requestDto);
 
     CommentResponseDto update(UUID id, CommentRequestDto requestDto);
