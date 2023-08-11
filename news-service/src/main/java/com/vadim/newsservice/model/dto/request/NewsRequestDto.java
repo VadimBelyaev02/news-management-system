@@ -15,6 +15,6 @@ public class NewsRequestDto {
     @Size(min = 10, max = 255, message = "News title must be from 10 to 255")
     private String title;
 
-    @Size(min = 10, max = 1000, message = "News text must be form 10 to 1000")
+    @Size(min = 10, max = 10000, message = "News text must be form 10 to 1000")
     private String text;
 }

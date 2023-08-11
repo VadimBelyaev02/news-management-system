@@ -5,13 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Builder
 public record CommentResponseDto(
-         Long id,
-         OffsetDateTime time,
+         UUID id,
+         LocalDateTime time,
          String text,
          String username,
          UUID newsId
