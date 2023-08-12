@@ -35,6 +35,15 @@ public class GlobalControllerAdvice {
                 servletRequest.getServletPath()
         );
     }
+
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<ApiResponse<Void>> handleNotFoundException(NullPointerException exception,
+                                                                     HttpServletRequest servletRequest) {
+        return ApiResponse.notFound(
+                exception.getMessage(),
+                servletRequest.getServletPath()
+        );
+    }
 //
 //    @ExceptionHandler({DuplicateRecordException.class})
 //    public ResponseEntity<ApiResponseDto<?>> handleDuplicateRecordException(DuplicateRecordException exception) {
