@@ -22,7 +22,6 @@ public class Comment {
     private UUID id;
 
     @CreatedDate
-    @Builder.Default
     private LocalDateTime time;
 
     private String text;

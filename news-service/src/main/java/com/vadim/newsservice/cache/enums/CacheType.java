@@ -1,4 +1,4 @@
-package com.vadim.newsservice.utils.cache.enums;
+package com.vadim.newsservice.cache.enums;
 
 public enum CacheType {
     LRU("LRU"),

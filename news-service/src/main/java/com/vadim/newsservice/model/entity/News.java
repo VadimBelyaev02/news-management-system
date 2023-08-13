@@ -21,7 +21,6 @@ public class News {
     private UUID id;
 
     @CreatedDate
-    @Builder.Default
     private LocalDateTime time = LocalDateTime.now();
 
     private String title;

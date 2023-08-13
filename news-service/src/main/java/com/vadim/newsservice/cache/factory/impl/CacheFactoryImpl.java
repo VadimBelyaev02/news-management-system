@@ -1,10 +1,10 @@
-package com.vadim.newsservice.utils.cache.factory.impl;
+package com.vadim.newsservice.cache.factory.impl;
 
-import com.vadim.newsservice.utils.cache.Cache;
-import com.vadim.newsservice.utils.cache.enums.CacheType;
-import com.vadim.newsservice.utils.cache.factory.CacheFactory;
-import com.vadim.newsservice.utils.cache.impl.LfuCache;
-import com.vadim.newsservice.utils.cache.impl.LruCache;
+import com.vadim.newsservice.cache.impl.LfuCache;
+import com.vadim.newsservice.cache.impl.LruCache;
+import com.vadim.newsservice.cache.Cache;
+import com.vadim.newsservice.cache.enums.CacheType;
+import com.vadim.newsservice.cache.factory.CacheFactory;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(staticName = "newTagFactory")
