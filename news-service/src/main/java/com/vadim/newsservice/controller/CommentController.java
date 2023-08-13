@@ -10,6 +10,7 @@ import com.vadim.newsservice.service.CommentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,8 +37,10 @@ public class CommentController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<PageResponse<CommentResponseDto>>> getAllComments(Pageable pageable,
-                                                                                        @RequestBody(required = false) CommentCriteria commentCriteria) {
+    public ResponseEntity<ApiResponse<PageResponse<CommentResponseDto>>> getAllComments(
+            Pageable pageable,
+            @RequestBody(required = false) CommentCriteria commentCriteria
+    ) {
         PageResponse<CommentResponseDto> commentResponseDtoPage = service.getAll(pageable, commentCriteria);
 
         return ApiResponse.ok(
@@ -49,8 +52,10 @@ public class CommentController {
 
 
     @PostMapping
-    public ResponseEntity<ApiResponse<CommentResponseDto>> postComments(@RequestBody @Valid CommentRequestDto commentRequestDto) {
-        CommentResponseDto commentResponseDto = service.save(commentRequestDto);
+    public ResponseEntity<ApiResponse<CommentResponseDto>> postComments(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization,
+            @RequestBody @Valid CommentRequestDto commentRequestDto) {
+        CommentResponseDto commentResponseDto = service.save(commentRequestDto, authorization);
 
         return ApiResponse.created(
                 "Comment with id = " + commentResponseDto.id() + " was created",
@@ -60,9 +65,11 @@ public class CommentController {
     }
 
     @PutMapping("/{commentId}")
-    public ResponseEntity<ApiResponse<CommentResponseDto>> putComments(@RequestBody @Valid CommentRequestDto requestDto,
-                                                                       @PathVariable UUID commentId) {
-        CommentResponseDto commentResponseDto = service.update(commentId, requestDto);
+    public ResponseEntity<ApiResponse<CommentResponseDto>> putComments(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization,
+            @RequestBody @Valid CommentRequestDto requestDto,
+            @PathVariable UUID commentId) {
+        CommentResponseDto commentResponseDto = service.update(commentId, requestDto, authorization);
 
         return ApiResponse.ok(
                 "Comment with id = " + commentId + " was updated",
@@ -72,8 +79,11 @@ public class CommentController {
     }
 
     @DeleteMapping("/{commentId}")
-    public ResponseEntity<ApiResponse<Void>> deleteComment(@PathVariable UUID commentId) {
-        service.deleteById(commentId);
+    public ResponseEntity<ApiResponse<Void>> deleteComment(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization,
+            @PathVariable UUID commentId
+    ) {
+        service.deleteById(commentId, authorization);
 
         return ApiResponse.noContent(
                 "Comment with id = " + commentId + " was deleted",

@@ -60,7 +60,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public CommentResponseDto save(CommentRequestDto requestDto) {
+    public CommentResponseDto save(CommentRequestDto requestDto, String token) {
         Comment comment = mapper.toEntity(requestDto);
         Comment savedComment = repository.save(comment);
         return mapper.toResponseDto(savedComment);
@@ -68,7 +68,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public CommentResponseDto update(UUID id, CommentRequestDto requestDto) {
+    public CommentResponseDto update(UUID id, CommentRequestDto requestDto, String token) {
         Comment comment = repository.findById(id).orElseThrow(
                 () -> new NotFoundException(String.format(COMMENT_NOT_FOUND_BY_ID, id))
         );
@@ -78,7 +78,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public void deleteById(UUID id) {
+    public void deleteById(UUID id, String token) {
         if (!repository.existsById(id)) {
             throw new NotFoundException(String.format(COMMENT_NOT_FOUND_BY_ID, id));
         }

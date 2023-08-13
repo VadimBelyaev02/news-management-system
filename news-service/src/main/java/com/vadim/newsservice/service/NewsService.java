@@ -14,8 +14,8 @@ public interface NewsService {
 
     PageResponse<NewsResponseDto> getAll(Pageable pageable);
 
-    NewsResponseDto save(NewsRequestDto requestDto);
-    NewsResponseDto update(UUID id, NewsRequestDto newsDtoRequest);
+    NewsResponseDto save(NewsRequestDto requestDto, String token);
+    NewsResponseDto update(UUID id, NewsRequestDto newsDtoRequest, String token);
 
-    void deleteById(UUID id);
+    void deleteById(UUID id, String token);
 }

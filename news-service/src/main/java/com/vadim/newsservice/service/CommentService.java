@@ -14,9 +14,9 @@ public interface CommentService {
 
     PageResponse<CommentResponseDto> getAll(Pageable pageable, CommentCriteria criteria);
 
-    CommentResponseDto save(CommentRequestDto requestDto);
+    CommentResponseDto save(CommentRequestDto requestDto, String token);
 
-    CommentResponseDto update(UUID id, CommentRequestDto requestDto);
+    CommentResponseDto update(UUID id, CommentRequestDto requestDto, String token);
 
-    void deleteById(UUID id);
+    void deleteById(UUID id, String token);
 }

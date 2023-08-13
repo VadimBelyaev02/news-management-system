@@ -8,6 +8,7 @@ import com.vadim.newsservice.service.NewsService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,8 +46,10 @@ public class NewsController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<NewsResponseDto>> postNews(@RequestBody @Valid NewsRequestDto newsRequestDto) {
-        NewsResponseDto newsResponseDto = service.save(newsRequestDto);
+    public ResponseEntity<ApiResponse<NewsResponseDto>> postNews(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization,
+            @RequestBody @Valid NewsRequestDto newsRequestDto) {
+        NewsResponseDto newsResponseDto = service.save(newsRequestDto, authorization);
 
         return ApiResponse.created(
                 "News with id = " + newsResponseDto.id() + " was created",
@@ -56,9 +59,11 @@ public class NewsController {
     }
 
     @PutMapping("/{newsId}")
-    public ResponseEntity<ApiResponse<NewsResponseDto>> putNews(@RequestBody @Valid NewsRequestDto newsRequestDto,
-                                                                @PathVariable UUID newsId) {
-        NewsResponseDto newsResponseDto = service.update(newsId, newsRequestDto);
+    public ResponseEntity<ApiResponse<NewsResponseDto>> putNews(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization,
+            @RequestBody @Valid NewsRequestDto newsRequestDto,
+            @PathVariable UUID newsId) {
+        NewsResponseDto newsResponseDto = service.update(newsId, newsRequestDto, authorization);
 
         return ApiResponse.ok(
                 "News with id = " + newsId + " was updated ",
@@ -68,8 +73,10 @@ public class NewsController {
     }
 
     @DeleteMapping("/{newsId}")
-    public ResponseEntity<ApiResponse<Void>> deleteNews(@PathVariable UUID newsId) {
-        service.deleteById(newsId);
+    public ResponseEntity<ApiResponse<Void>> deleteNews(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization,
+            @PathVariable UUID newsId) {
+        service.deleteById(newsId, authorization);
 
         return ApiResponse.noContent(
                 "News with id = " + newsId + " was deleted",

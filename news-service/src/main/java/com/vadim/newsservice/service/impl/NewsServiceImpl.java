@@ -46,7 +46,7 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     @Transactional
-    public NewsResponseDto save(NewsRequestDto requestDto) {
+    public NewsResponseDto save(NewsRequestDto requestDto, String token) {
         News news = mapper.toEntity(requestDto);
         News savedNews = repository.save(news);
         return mapper.toResponseDto(savedNews);
@@ -54,7 +54,7 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     @Transactional
-    public NewsResponseDto update(UUID id, NewsRequestDto newsDtoRequest) {
+    public NewsResponseDto update(UUID id, NewsRequestDto newsDtoRequest, String token) {
         News news = repository.findById(id).orElseThrow(
                 () -> new NotFoundException(String.format(NEWS_NOT_FOUND_BY_ID, id))
         );
@@ -64,7 +64,7 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     @Transactional
-    public void deleteById(UUID id) {
+    public void deleteById(UUID id, String token) {
         if (!repository.existsById(id)) {
             throw new NotFoundException(String.format(NEWS_NOT_FOUND_BY_ID, id));
         }

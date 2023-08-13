@@ -21,7 +21,7 @@ public class News {
     private UUID id;
 
     @CreatedDate
-    private LocalDateTime time = LocalDateTime.now();
+    private LocalDateTime time;
 
     private String title;
     private String text;
