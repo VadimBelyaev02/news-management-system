@@ -1,5 +1,6 @@
 package com.vadim.newsservice.service.impl;
 
+import com.vadim.newsservice.exception.AccessDeniedException;
 import com.vadim.newsservice.exception.NotFoundException;
 import com.vadim.newsservice.model.criteria.CommentCriteria;
 import com.vadim.newsservice.model.dto.request.CommentRequestDto;
@@ -12,7 +13,6 @@ import com.vadim.newsservice.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.UUID;
 
-import static com.vadim.newsservice.utils.constants.CommentConstants.COMMENT_NOT_FOUND_BY_ID;
+import static com.vadim.newsservice.utils.constants.CommentConstants.*;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +28,7 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository repository;
     private final CommentMapper mapper;
+    private final AuthenticationServiceImpl authenticationService;
 
     @Override
     @Transactional(readOnly = true)
@@ -61,6 +62,11 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     public CommentResponseDto save(CommentRequestDto requestDto, String token) {
+        if (!authenticationService.canCreateComments(token)) {
+            throw new AccessDeniedException(String.format(NO_ACCESS_TO_CREATE_COMMENT));
+
+        }
+
         Comment comment = mapper.toEntity(requestDto);
         Comment savedComment = repository.save(comment);
         return mapper.toResponseDto(savedComment);
@@ -72,6 +78,10 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = repository.findById(id).orElseThrow(
                 () -> new NotFoundException(String.format(COMMENT_NOT_FOUND_BY_ID, id))
         );
+        if (!authenticationService.canModifyComment(comment.getUsername(), token)) {
+            throw new AccessDeniedException(String.format(NO_ACCESS_TO_UPDATE_COMMENT, id));
+        }
+
         mapper.updateEntityFromRequestDto(requestDto, comment);
         return mapper.toResponseDto(comment);
     }
@@ -79,8 +89,14 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     public void deleteById(UUID id, String token) {
-        if (!repository.existsById(id)) {
-            throw new NotFoundException(String.format(COMMENT_NOT_FOUND_BY_ID, id));
+//        if (!repository.existsById(id)) {
+//            throw new NotFoundException(String.format(COMMENT_NOT_FOUND_BY_ID, id));
+//        }
+        Comment comment = repository.findById(id).orElseThrow(
+                () -> new NotFoundException(String.format(COMMENT_NOT_FOUND_BY_ID, id))
+        );
+        if (!authenticationService.canDeleteComment(comment.getUsername(), token)) {
+            throw new AccessDeniedException(String.format(NO_ACCESS_TO_UPDATE_COMMENT, id));
         }
         repository.deleteById(id);
     }

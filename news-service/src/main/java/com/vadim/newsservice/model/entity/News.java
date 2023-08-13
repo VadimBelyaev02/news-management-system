@@ -26,6 +26,8 @@ public class News {
     private String title;
     private String text;
 
+    private String username;
+
     @OneToMany
     private List<Comment> comments;
 }

@@ -1,6 +1,6 @@
 package com.vadim.newsservice.client;
 
-import com.vadim.newsservice.client.dto.UserResponseDto;
+import com.vadim.newsservice.client.model.dto.UserResponseDto;
 import com.vadim.newsservice.model.dto.response.ApiResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
