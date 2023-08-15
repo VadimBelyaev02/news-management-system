@@ -14,7 +14,7 @@ import org.springframework.lang.NonNullApi;
 import java.util.Collection;
 import java.util.List;
 
-@NoArgsConstructor(staticName = "newTagFactory")
+@NoArgsConstructor(staticName = "newCacheFactory")
 public class CacheFactoryImpl<K, V> implements CacheFactory<K, V>, CacheManager {
     @Override
     public Cache<K, V> createCache(CacheType cacheType, int capacity) {

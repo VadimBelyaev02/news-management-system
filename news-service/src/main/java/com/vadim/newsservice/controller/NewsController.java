@@ -1,5 +1,6 @@
 package com.vadim.newsservice.controller;
 
+import com.vadim.newsservice.aop.annotations.Log;
 import com.vadim.newsservice.model.dto.request.NewsRequestDto;
 import com.vadim.newsservice.model.dto.response.ApiResponse;
 import com.vadim.newsservice.model.dto.response.NewsResponseDto;
@@ -17,7 +18,7 @@ import java.util.UUID;
 
 import static com.vadim.newsservice.utils.constants.NewsConstants.NEWS_API_PATH;
 
-@Validated
+@Log
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(NEWS_API_PATH)

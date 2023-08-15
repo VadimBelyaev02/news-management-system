@@ -1,5 +1,7 @@
 package com.vadim.newsservice.config;
 
+import com.vadim.newsservice.cache.factory.CacheFactory;
+import com.vadim.newsservice.cache.factory.impl.CacheFactoryImpl;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -14,17 +16,17 @@ public class CacheConfig {
     @EnableCaching
     public static class ProdConfig {
 
-        @Bean
-        public CacheManager cacheManager() {
 
-        }
     }
 
     @Configuration
     @Profile("dev")
     @EnableCaching
     public static class DevConfig {
-
+        @Bean
+        public CacheManager cacheManager() {
+            return CacheFactoryImpl.newCacheFactory();
+        }
     }
 
     @Configuration

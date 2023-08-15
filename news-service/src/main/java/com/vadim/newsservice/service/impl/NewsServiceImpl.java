@@ -1,5 +1,6 @@
 package com.vadim.newsservice.service.impl;
 
+import com.vadim.newsservice.aop.annotations.Log;
 import com.vadim.newsservice.exception.NotFoundException;
 import com.vadim.newsservice.model.dto.request.NewsRequestDto;
 import com.vadim.newsservice.model.dto.response.NewsResponseDto;
@@ -21,6 +22,7 @@ import java.util.UUID;
 
 import static com.vadim.newsservice.utils.constants.NewsConstants.NEWS_NOT_FOUND_BY_ID;
 
+@Log
 @Service
 @RequiredArgsConstructor
 public class NewsServiceImpl implements NewsService {
