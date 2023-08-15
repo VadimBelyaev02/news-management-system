@@ -41,7 +41,17 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional(readOnly = true)
-    public PageResponse<CommentResponseDto> getAll(Pageable pageable, CommentCriteria criteria) {
+    public PageResponse<CommentResponseDto> getAll(Pageable pageable) {
+        List<CommentResponseDto> commentResponseDtos = repository.findAll(pageable).stream()
+                .map(mapper::toResponseDto)
+                .toList();
+        return PageResponse.response(pageable, commentResponseDtos);
+    }
+
+
+    @Override
+    @Transactional(readOnly = true)
+    public PageResponse<CommentResponseDto> getAllByCriteria(Pageable pageable, CommentCriteria criteria) {
         Comment searchComment = new Comment();
         searchComment.setText(criteria.getText());
         searchComment.setUsername(criteria.getUsername());
@@ -62,10 +72,9 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     public CommentResponseDto save(CommentRequestDto requestDto, String token) {
-        if (!authenticationService.canCreateComments(token)) {
-            throw new AccessDeniedException(String.format(NO_ACCESS_TO_CREATE_COMMENT));
-
-        }
+//        if (!authenticationService.canCreateComments(token)) {
+//            throw new AccessDeniedException(String.format(NO_ACCESS_TO_CREATE_COMMENT));
+//        }
 
         Comment comment = mapper.toEntity(requestDto);
         Comment savedComment = repository.save(comment);
@@ -78,9 +87,9 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = repository.findById(id).orElseThrow(
                 () -> new NotFoundException(String.format(COMMENT_NOT_FOUND_BY_ID, id))
         );
-        if (!authenticationService.canModifyComment(comment.getUsername(), token)) {
-            throw new AccessDeniedException(String.format(NO_ACCESS_TO_UPDATE_COMMENT, id));
-        }
+//        if (!authenticationService.canModifyComment(comment.getUsername(), token)) {
+//            throw new AccessDeniedException(String.format(NO_ACCESS_TO_UPDATE_COMMENT, id));
+//        }
 
         mapper.updateEntityFromRequestDto(requestDto, comment);
         return mapper.toResponseDto(comment);
@@ -95,9 +104,9 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = repository.findById(id).orElseThrow(
                 () -> new NotFoundException(String.format(COMMENT_NOT_FOUND_BY_ID, id))
         );
-        if (!authenticationService.canDeleteComment(comment.getUsername(), token)) {
-            throw new AccessDeniedException(String.format(NO_ACCESS_TO_UPDATE_COMMENT, id));
-        }
+//        if (!authenticationService.canDeleteComment(comment.getUsername(), token)) {
+//            throw new AccessDeniedException(String.format(NO_ACCESS_TO_UPDATE_COMMENT, id));
+//        }
         repository.deleteById(id);
     }
 }

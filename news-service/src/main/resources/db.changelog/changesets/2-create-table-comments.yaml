@@ -1,38 +1,40 @@
-#  - changeSet:
-#      id: 2
-#      author: Vadim
-#      comment: Create table "comments"
-#      changes:
-#        - createTable:
-#            tableName: comments
-#            columns:
-#              - column:
-#                  name: id
-#                  type: uuid
-#                  autoIncrement: true
-#                  constraints:
-#                    primaryKey: true
-#                    nullable: false
-#
-#              - column:
-#                  name: time
-#                  type: timestamp
-#                  constraints:
-#                    nullable: false
-#              - column:
-#                  name: text
-#                  type: varchar(1000)
-#                  constraints:
-#                    nullable: false
-#
-#              - column:
-#                  name: username
-#                  type: varchar(50)
-#                  constraints:
-#                    nullable: false
-#
-#              - column:
-#                  name: news_id
-#                  type: bigint
-#                  constraints:
-#                    nullable: false
+databaseChangeLog:
+  - changeSet:
+      id: 2
+      author: Vadim
+      comment: Create table "comments"
+      changes:
+        - createTable:
+            tableName: comments
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: time
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: text
+                  type: varchar(1000)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: username
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: news_id
+                  type: uuid
+                  constraints:
+                    foreignKeyName: comments_news_id_fk
+                    referencedColumnNames: id
+                    referencedTableName: news
+                    nullable: false
+

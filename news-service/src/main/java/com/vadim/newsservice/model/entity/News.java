@@ -21,13 +21,13 @@ public class News {
     private UUID id;
 
     @CreatedDate
-    private LocalDateTime time;
+    private LocalDateTime time = LocalDateTime.now();
 
     private String title;
     private String text;
 
     private String username;
 
-    @OneToMany
+    @OneToMany(mappedBy = "news", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Comment> comments;
 }

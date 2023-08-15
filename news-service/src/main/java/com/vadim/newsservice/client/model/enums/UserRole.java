@@ -7,9 +7,10 @@ import java.util.Set;
 
 @Getter
 public enum UserRole {
-    ADMIN(Set.of(Permission.READ, Permission.WRITE, Permission.UPDATE, Permission.DELETE, Permission.CRUD_ANY)),
-    JOURNALIST(Set.of(Permission.CRUD_OWN)),
-    SUBSCRIBER(Set.of(Permission.CRUD_OWN));
+    ADMIN(Set.of(Permission.CREATE_COMMENT, Permission.DELETE_COMMENT, Permission.DELETE_NEWS,
+            Permission.MODIFY_NEWS, Permission.CREATE_NEWS)),
+    JOURNALIST(Set.of(Permission.CREATE_NEWS, Permission.CREATE_COMMENT)),
+    SUBSCRIBER(Set.of(Permission.CREATE_COMMENT));
 
     private final Set<Permission> permissions;
 

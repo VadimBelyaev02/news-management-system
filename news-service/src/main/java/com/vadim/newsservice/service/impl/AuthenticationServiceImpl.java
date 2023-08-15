@@ -47,8 +47,7 @@ public class AuthenticationServiceImpl {
 
     public boolean canModifyComment(String username, String token) {
         UserResponseDto user = getUser(token);
-        return user.username().equals(username) || user.role().getPermissions()
-                .contains(Permission.UPDATE_COMMENT);
+        return user.username().equals(username);
     }
 
     public boolean canCreateComments(String token) {
@@ -56,5 +55,21 @@ public class AuthenticationServiceImpl {
         return user.role().getPermissions().contains(Permission.CREATE_COMMENT);
     }
 
+    public boolean canDeleteNews(String username, String token) {
+        UserResponseDto user = getUser(token);
+        return user.username().equals(username) || user.role().getPermissions()
+                .contains(Permission.DELETE_NEWS);
+    }
+
+    public boolean canModifyNews(String username, String token) {
+        UserResponseDto user = getUser(token);
+        return user.username().equals(username) || user.role().getPermissions()
+                .contains(Permission.MODIFY_NEWS);
+    }
+
+    public boolean canCreateNews(String token) {
+        UserResponseDto user = getUser(token);
+        return user.role().getPermissions().contains(Permission.CREATE_NEWS);
+    }
 
 }

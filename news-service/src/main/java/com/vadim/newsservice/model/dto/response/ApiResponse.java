@@ -67,4 +67,11 @@ public class ApiResponse<T> {
         return of(message, path, HttpStatus.NOT_FOUND, null);
     }
 
+    public static <T> ResponseEntity<ApiResponse<T>> badRequest(
+            final String message,
+            final String path
+    ) {
+        return of(message, path, HttpStatus.BAD_REQUEST, null);
+    }
+
 }

@@ -10,15 +10,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
 import static com.vadim.newsservice.utils.constants.NewsConstants.NEWS_API_PATH;
 
+@Validated
 @RestController
 @RequiredArgsConstructor
-@RequestMapping
+@RequestMapping(NEWS_API_PATH)
 public class NewsController {
 
     private final NewsService service;

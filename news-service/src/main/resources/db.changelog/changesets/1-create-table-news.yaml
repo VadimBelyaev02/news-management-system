@@ -1,28 +1,34 @@
-#  - changeSet:
-#      id: 1
-#      author: Vadim
-#      comment: Create table "news"
-#      changes:
-#        - createTable:
-#            tableName: news
-#            columns:
-#              - column:
-#                  name: id
-#                  type: uuid
-#                  constraints:
-#                    primaryKey: true
-#              - column:
-#                  name: time
-#                  type: timestamp
-#                  constraints:
-#                    nullable: false
-#              - column:
-#                  name: title
-#                  type: varchar(255)
-#                  constraints:
-#                    nullable: false
-#              - column:
-#                  name: text
-#                  type: varchar(10000)
-#                  constraints:
-#                    nullable: false
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Vadim
+      comment: Create table "news"
+      changes:
+        - createTable:
+            tableName: news
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: time
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: title
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: text
+                  type: varchar(10000)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: username
+                  type: varchar(50)
+                  constraints:
+                    nullable: false

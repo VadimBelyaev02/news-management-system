@@ -14,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
 import java.util.UUID;
 
 import static com.vadim.newsservice.utils.constants.CommentConstants.COMMENT_API_PATH;
@@ -39,14 +40,23 @@ public class CommentController {
     @GetMapping
     public ResponseEntity<ApiResponse<PageResponse<CommentResponseDto>>> getAllComments(
             Pageable pageable,
-            @RequestBody(required = false) CommentCriteria commentCriteria
+        //    @RequestBody(required = false) CommentCriteria criteria
+            @RequestParam(required = false, name = "text") String text,
+            @RequestParam(required = false, name = "username") String username
     ) {
-        PageResponse<CommentResponseDto> commentResponseDtoPage = service.getAll(pageable, commentCriteria);
+        CommentCriteria criteria = CommentCriteria.builder()
+                .text(text)
+                .username(username)
+                .build();
+        criteria = null;
+        PageResponse<CommentResponseDto> response = Objects.isNull(criteria) ? service.getAll(pageable)
+                : service.getAllByCriteria(pageable, criteria);
+
 
         return ApiResponse.ok(
                 "All comments",
                 COMMENT_API_PATH,
-                commentResponseDtoPage
+                response
         );
     }
 
