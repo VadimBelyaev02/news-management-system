@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.vadim</groupId>
     <artifactId>news-service</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>news-service</name>
     <description>news-service</description>
     <properties>
