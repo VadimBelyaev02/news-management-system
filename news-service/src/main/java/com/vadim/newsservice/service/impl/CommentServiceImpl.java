@@ -11,6 +11,9 @@ import com.vadim.newsservice.model.mapper.CommentMapper;
 import com.vadim.newsservice.repository.CommentRepository;
 import com.vadim.newsservice.service.CommentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Pageable;
@@ -32,6 +35,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "comment", key = "#id")
     public CommentResponseDto getById(UUID id) {
         Comment comment = repository.findById(id).orElseThrow(
                 () -> new NotFoundException(String.format(COMMENT_NOT_FOUND_BY_ID, id))
@@ -71,6 +75,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
+    @CachePut(value = "comment", key = "#result.id()")
     public CommentResponseDto save(CommentRequestDto requestDto, String token) {
 //        if (!authenticationService.canCreateComments(token)) {
 //            throw new AccessDeniedException(String.format(NO_ACCESS_TO_CREATE_COMMENT));
@@ -83,6 +88,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
+    @CachePut(value = "comment", key = "#id")
     public CommentResponseDto update(UUID id, CommentRequestDto requestDto, String token) {
         Comment comment = repository.findById(id).orElseThrow(
                 () -> new NotFoundException(String.format(COMMENT_NOT_FOUND_BY_ID, id))
@@ -97,6 +103,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "comment", key = "#id")
     public void deleteById(UUID id, String token) {
 //        if (!repository.existsById(id)) {
 //            throw new NotFoundException(String.format(COMMENT_NOT_FOUND_BY_ID, id));

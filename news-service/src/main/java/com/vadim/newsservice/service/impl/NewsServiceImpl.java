@@ -9,6 +9,9 @@ import com.vadim.newsservice.model.mapper.NewsMapper;
 import com.vadim.newsservice.repository.NewsRepository;
 import com.vadim.newsservice.service.NewsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +30,7 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "news", key = "#id")
     public NewsResponseDto getById(UUID id) {
         News news = repository.findById(id).orElseThrow(
                 () -> new NotFoundException(String.format(NEWS_NOT_FOUND_BY_ID, id))
@@ -46,6 +50,7 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     @Transactional
+    @CachePut(value = "news", key = "#result.id()")
     public NewsResponseDto save(NewsRequestDto requestDto, String token) {
         News news = mapper.toEntity(requestDto);
         News savedNews = repository.save(news);
@@ -54,6 +59,7 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     @Transactional
+    @CachePut(value = "news", key = "#id")
     public NewsResponseDto update(UUID id, NewsRequestDto newsDtoRequest, String token) {
         News news = repository.findById(id).orElseThrow(
                 () -> new NotFoundException(String.format(NEWS_NOT_FOUND_BY_ID, id))
@@ -64,6 +70,7 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "news", key = "#id")
     public void deleteById(UUID id, String token) {
         if (!repository.existsById(id)) {
             throw new NotFoundException(String.format(NEWS_NOT_FOUND_BY_ID, id));
