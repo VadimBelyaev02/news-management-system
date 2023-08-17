@@ -2,6 +2,7 @@ FROM openjdk:17-jdk-slim
 
 WORKDIR /app
 
-COPY ./target/eureka-server-1.0.0.jar /app/eureka-server-1.0.0.jar
+COPY target/eureka-server-1.0.0.jar /app/app.jar
+COPY wait-for-it.sh /app
 
-CMD ["java", "-jar", "/app/eureka-server-1.0.0.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
