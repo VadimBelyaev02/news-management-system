@@ -1,5 +1,6 @@
 package com.vadim.newsservice.service.impl;
 
+import com.vadim.newsservice.aop.annotations.Log;
 import com.vadim.newsservice.client.UserFeignClient;
 import com.vadim.newsservice.client.model.dto.UserResponseDto;
 import com.vadim.newsservice.client.model.enums.Permission;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Log
 @Service
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl {

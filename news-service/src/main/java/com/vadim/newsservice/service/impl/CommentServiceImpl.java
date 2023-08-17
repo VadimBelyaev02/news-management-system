@@ -1,6 +1,6 @@
 package com.vadim.newsservice.service.impl;
 
-import com.vadim.newsservice.exception.AccessDeniedException;
+import com.vadim.newsservice.aop.annotations.Log;
 import com.vadim.newsservice.exception.NotFoundException;
 import com.vadim.newsservice.model.criteria.CommentCriteria;
 import com.vadim.newsservice.model.dto.request.CommentRequestDto;
@@ -23,8 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.UUID;
 
-import static com.vadim.newsservice.utils.constants.CommentConstants.*;
+import static com.vadim.newsservice.utils.constants.CommentConstants.COMMENT_NOT_FOUND_BY_ID;
 
+@Log
 @Service
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
