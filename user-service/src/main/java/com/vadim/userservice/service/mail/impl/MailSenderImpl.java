@@ -27,7 +27,7 @@ public class MailSenderImpl implements MailSender {
     }
 
     @Override
-    public void sendButton(String email, String buttonText, String subject, String code) {
+    public void sendConfirmationButton(String email, String subject, String code) {
         String URL = "localhost:8765/api/confirm-registration?code=" + code;
 
         String text = "<html>" +

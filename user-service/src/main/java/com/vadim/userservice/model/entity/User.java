@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -27,7 +28,7 @@ public class User {
 
     @CreatedDate
     @Column(name = "created_date")
-    private String createdDate;
+    private LocalDateTime createdDate;
     private UserStatus status;
     private UserRole role;
 }

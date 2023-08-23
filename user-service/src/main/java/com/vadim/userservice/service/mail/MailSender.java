@@ -4,5 +4,5 @@ public interface MailSender {
 
     void sendMessage(String email, String message, String subject);
 
-    void sendButton(String email, String buttonText, String subject, String URL);
+    void sendConfirmationButton(String email, String subject, String code);
 }

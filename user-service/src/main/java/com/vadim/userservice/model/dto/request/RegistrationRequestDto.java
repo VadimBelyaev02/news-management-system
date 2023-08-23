@@ -2,7 +2,13 @@ package com.vadim.userservice.model.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 
+@Data
+@AllArgsConstructor
+@Builder
 public class RegistrationRequestDto {
 
     @NotBlank(message = "Username can't be empty")

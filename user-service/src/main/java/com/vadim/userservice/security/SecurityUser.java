@@ -1,6 +1,7 @@
 package com.vadim.userservice.security;
 
 import com.vadim.userservice.model.entity.User;
+import com.vadim.userservice.model.enums.UserStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,7 +10,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 @Builder
@@ -60,7 +60,10 @@ public class SecurityUser implements UserDetails {
     public static UserDetails fromUser(User user) {
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(), user.getPassword(),
-                true, true, true, true,
+                UserStatus.ACTIVE.equals(user.getStatus()),
+                true,
+                true,
+                !UserStatus.BANNED.equals(user.getStatus()),
                 user.getRole().getAuthorities()
         );
     }
