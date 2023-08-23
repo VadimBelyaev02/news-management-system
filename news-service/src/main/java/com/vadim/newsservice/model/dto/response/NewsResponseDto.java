@@ -15,5 +15,6 @@ public record NewsResponseDto(
         LocalDateTime time,
         String title,
         String text,
+        String username,
         PageResponse<CommentResponseDto> comments
 ) { }
