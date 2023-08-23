@@ -10,6 +10,8 @@ public record UserResponseDto(
         String username,
         String email,
         String createdDate,
-        String status
+        String status,
+        String role,
+        String avatar
 ) {
 }
