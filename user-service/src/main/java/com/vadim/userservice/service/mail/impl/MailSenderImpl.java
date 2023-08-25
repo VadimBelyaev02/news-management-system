@@ -10,6 +10,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import static com.vadim.userservice.util.constants.Html.getHtmlForm;
+
 @RequiredArgsConstructor
 @Service
 public class MailSenderImpl implements MailSender {
@@ -17,7 +19,7 @@ public class MailSenderImpl implements MailSender {
     private final JavaMailSender mailSender;
 
     @Override
-    public void sendMessage(String email, String message, String subject) {
+    public void sendTextMessage(String email, String message, String subject) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(email);
         mailMessage.setText(message);
@@ -28,23 +30,16 @@ public class MailSenderImpl implements MailSender {
 
     @Override
     public void sendConfirmationButton(String email, String subject, String code) {
-        String URL = "localhost:8765/api/confirm-registration?code=" + code;
-
-        String text = "<html>" +
-                "<head><title>" + subject + "</title></head>" +
-                "<body>" +
-                "<form method=\"post\" action=\"" + URL + "\">" +
-                "<input type=\"submit\" value=\"Confirm\">" +
-                "</form>" +
-                "</body>" +
-                "</html>";
+        String URL = "localhost:8765/user-service/api/auth/register/confirm?code=" + code;
+        String text = getHtmlForm(subject, URL);
 
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message, false, "UTF-8");
             mimeMessageHelper.setTo(email);
-            mimeMessageHelper.setText(text);
+            mimeMessageHelper.setText(text, true);
             mimeMessageHelper.setSubject(subject);
+            mailSender.send(message);
         } catch (MessagingException e) {
             throw new MailSendingException("Can't send an email. Error: " + e.getMessage());
         }

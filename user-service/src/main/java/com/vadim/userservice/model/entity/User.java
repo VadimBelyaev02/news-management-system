@@ -29,6 +29,10 @@ public class User {
     @CreatedDate
     @Column(name = "created_date")
     private LocalDateTime createdDate;
+
+    @Enumerated(EnumType.STRING)
     private UserStatus status;
+
+    @Enumerated(EnumType.STRING)
     private UserRole role;
 }

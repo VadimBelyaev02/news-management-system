@@ -1,5 +1,6 @@
 package com.vadim.userservice.exception.handler;
 
+import com.vadim.userservice.exception.DuplicateRecordException;
 import com.vadim.userservice.exception.MailSendingException;
 import com.vadim.userservice.exception.RecordNotFoundException;
 import com.vadim.userservice.model.dto.response.ApiResponse;
@@ -38,6 +39,16 @@ public class GlobalControllerAdvice {
                 servletRequest.getServletPath()
         );
     }
+
+    @ExceptionHandler(DuplicateRecordException.class)
+    public ResponseEntity<ApiResponse<Void>> handleDuplicateRecordException(DuplicateRecordException exception,
+                                                                     HttpServletRequest servletRequest) {
+        return ApiResponse.badRequest(
+                exception.getMessage(),
+                servletRequest.getServletPath()
+        );
+    }
+
 
 
     @ExceptionHandler({MailSendingException.class})

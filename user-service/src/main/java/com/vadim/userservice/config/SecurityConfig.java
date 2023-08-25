@@ -4,6 +4,9 @@ import com.vadim.userservice.security.jwt.JwtTokenConfigurer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,16 +26,25 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.csrf().disable();
+
         httpSecurity
-                //    .authorizeRequests()
-                //  .anyRequest()
-                //.authenticated()
-                //.and()
                 .authorizeRequests()
-                .requestMatchers("/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/**").permitAll()
+                .requestMatchers(HttpMethod.DELETE, "/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/**").permitAll()
+                .requestMatchers(HttpMethod.PUT, "/**").permitAll()
+                .requestMatchers(HttpMethod.PATCH, "/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/**").permitAll()
+
                 .anyRequest().authenticated()
                 .and()
                 .apply(jwtTokenConfigurer);
         return httpSecurity.build();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 }

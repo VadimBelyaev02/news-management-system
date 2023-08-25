@@ -16,7 +16,7 @@ public class RegistrationRequestDto {
     private String username;
 
     @NotBlank(message = "Email can't be empty")
-    @Size(min = 5, max = 50, message = "Username length must be from 5 to 50")
+    @Size(min = 5, max = 50, message = "Email length must be from 5 to 50")
     private String email;
     private String avatar;
 

@@ -13,9 +13,9 @@ public interface UserMapper {
 
     User toEntity(UserRequestDto requestDto);
 
-    @Mapping(target = "createdDate", expression = "java(LocalDateTime.now())")
-    @Mapping(target = "role", expression = "java(UserRole.SUBSCRIBER)")
-    @Mapping(target = "status", expression = "java(UserStatus.NOT_ACTIVE)")
+    @Mapping(target = "createdDate", expression = "java(java.time.LocalDateTime.now())")
+    @Mapping(target = "role", expression = "java(com.vadim.userservice.model.enums.UserRole.SUBSCRIBER)")
+    @Mapping(target = "status", expression = "java(com.vadim.userservice.model.enums.UserStatus.NOT_ACTIVE)")
     User toEntity(RegistrationRequestDto requestDto);
 
     UserResponseDto toResponseDto(User user);
