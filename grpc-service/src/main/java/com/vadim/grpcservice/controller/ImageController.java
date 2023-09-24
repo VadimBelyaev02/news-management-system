@@ -17,6 +17,7 @@ public class ImageController {
 
     @PostMapping
     public String uploadImage(@RequestParam("file") MultipartFile image) {
+        System.out.println(image.getOriginalFilename());
         return imageService.uploadImage(image);
     }
 }
