@@ -23,6 +23,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository repository;
     private final UserMapper mapper;
 
+
     @Override
     @Transactional(readOnly = true)
     public UserResponseDto getById(UUID userId) {
@@ -42,6 +43,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserResponseDto save(UserRequestDto userRequestDto) {
+
         User user = mapper.toEntity(userRequestDto);
         User savedUser = repository.save(user);
         return mapper.toResponseDto(savedUser);

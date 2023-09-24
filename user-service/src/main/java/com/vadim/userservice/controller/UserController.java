@@ -86,14 +86,13 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<UserResponseDto>> postUsers(@RequestBody @Valid UserRequestDto requestDto) {
-        return new ResponseEntity<>(null);
-        //        UserResponseDto userResponseDto = service.save(requestDto);
-//
-//        return ApiResponse.created(
-//                "User with id = " + userResponseDto.id() + " was created",
-//                USER_API_PATH,
-//                userResponseDto
-//        );
+        UserResponseDto userResponseDto = service.save(requestDto);
+
+        return ApiResponse.created(
+                "User with id = " + userResponseDto.id() + " was created",
+                USER_API_PATH,
+                userResponseDto
+        );
     }
 
     @PutMapping("/{userId}")

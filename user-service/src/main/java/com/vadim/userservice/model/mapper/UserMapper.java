@@ -8,7 +8,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-@Mapper
+@Mapper(uses = PhotoMapper.class)
 public interface UserMapper {
 
     User toEntity(UserRequestDto requestDto);

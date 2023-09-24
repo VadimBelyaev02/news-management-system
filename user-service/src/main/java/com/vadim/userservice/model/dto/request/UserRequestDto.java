@@ -21,8 +21,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserRequestDto {
-
     private String username;
     private String email;
-    private MultipartFile avatar;
+    private List<PhotoRequestDto> photos;
 }
