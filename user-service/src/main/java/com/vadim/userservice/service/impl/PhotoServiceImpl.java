@@ -1,7 +1,9 @@
-package com.vadim.grpcservice.service.impl;
+package com.vadim.userservice.service.impl;
 
-import com.vadim.grpcservice.model.UnsplashPhoto;
-import com.vadim.grpcservice.service.ImageService;
+import com.vadim.userservice.model.mapper.PhotoMapper;
+import com.vadim.userservice.model.unsplash.UnsplashPhoto;
+import com.vadim.userservice.repository.PhotoRepository;
+import com.vadim.userservice.service.PhotoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -11,13 +13,13 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-import java.util.Objects;
-
 @Service
 @RequiredArgsConstructor
-public class ImageServiceImpl implements ImageService {
+public class PhotoServiceImpl implements PhotoService {
 
     private final WebClient client;
+    private final PhotoRepository photoRepository;
+    private final PhotoMapper photoMapper;
 
     @Value("${unsplash.access-key}")
     private String accessKey;

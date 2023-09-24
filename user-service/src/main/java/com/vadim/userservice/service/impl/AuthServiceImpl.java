@@ -10,9 +10,11 @@ import com.vadim.userservice.model.dto.response.UserResponseDto;
 import com.vadim.userservice.model.entity.User;
 import com.vadim.userservice.model.enums.UserStatus;
 import com.vadim.userservice.model.mapper.UserMapper;
+import com.vadim.userservice.repository.PhotoRepository;
 import com.vadim.userservice.repository.UserRepository;
 import com.vadim.userservice.security.jwt.JwtTokenProvider;
 import com.vadim.userservice.service.AuthService;
+import com.vadim.userservice.service.PhotoService;
 import com.vadim.userservice.service.mail.MailSender;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -37,6 +39,8 @@ public class AuthServiceImpl implements AuthService {
     private final RedisTemplate<String, String> redisTemplate;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider tokenProvider;
+    private final PhotoService photoService;
+    private final PhotoRepository photoRepository;
 
     public AuthServiceImpl(UserRepository userRepository,
                            MailSender mailSender,
@@ -44,7 +48,8 @@ public class AuthServiceImpl implements AuthService {
                            UserMapper mapper,
                            RedisTemplate<String, String> redisTemplate,
                            AuthenticationManager authenticationManager,
-                           JwtTokenProvider tokenProvider) {
+                           JwtTokenProvider tokenProvider,
+                           PhotoService photoService, PhotoRepository photoRepository) {
         this.userRepository = userRepository;
         this.mailSender = mailSender;
         this.encoder = encoder;
@@ -52,6 +57,8 @@ public class AuthServiceImpl implements AuthService {
         this.redisTemplate = redisTemplate;
         this.authenticationManager = authenticationManager;
         this.tokenProvider = tokenProvider;
+        this.photoService = photoService;
+        this.photoRepository = photoRepository;
     }
 
 
@@ -66,6 +73,7 @@ public class AuthServiceImpl implements AuthService {
         }
         User user = mapper.toEntity(requestDto);
         user.setPassword(encoder.encode(requestDto.getPassword()));
+
 
         User savedUser = userRepository.save(user);
         String code = String.valueOf(UUID.randomUUID());

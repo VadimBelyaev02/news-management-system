@@ -1,5 +1,9 @@
 package com.vadim.userservice.config;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import net.devh.boot.grpc.client.channelfactory.GrpcChannelConfigurer;
 import net.devh.boot.grpc.client.channelfactory.GrpcChannelFactory;
 import net.devh.boot.grpc.client.config.GrpcChannelProperties;
@@ -13,12 +17,25 @@ import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Properties;
 
 @Configuration
 public class AppConfig {
-//
+
+    @Bean
+    public WebClient webClient() {
+        return WebClient.builder().build();
+    }
+
+//    @Bean
+//    public ObjectMapper objectMapper() {
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+//        return objectMapper;
+//    }
+//    //
 //    @Bean
 //    public GrpcChannelFactory grpcChannelFactory(GrpcChannelProperties properties,
 //                                                 ObjectProvider<GrpcChannelConfigurer> configurers) {

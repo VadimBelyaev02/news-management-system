@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @Builder
@@ -18,7 +20,6 @@ public class RegistrationRequestDto {
     @NotBlank(message = "Email can't be empty")
     @Size(min = 5, max = 50, message = "Email length must be from 5 to 50")
     private String email;
-    private String avatar;
 
     @NotBlank(message = "Password can't be empty")
     @Size(min = 6, max = 30, message = "Password length must be from 6 to 30")

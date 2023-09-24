@@ -1,5 +1,6 @@
 package com.vadim.userservice.service.impl;
 
+import com.vadim.userservice.client.PhotoFeignClient;
 import com.vadim.userservice.exception.UserNotFoundException;
 import com.vadim.userservice.model.criteria.UserCriteria;
 import com.vadim.userservice.model.dto.request.UserRequestDto;
@@ -23,7 +24,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepository repository;
     private final UserMapper mapper;
 
-
     @Override
     @Transactional(readOnly = true)
     public UserResponseDto getById(UUID userId) {
@@ -43,6 +43,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserResponseDto save(UserRequestDto userRequestDto) {
+       // userRequestDto.getPhotos().stream()
 
         User user = mapper.toEntity(userRequestDto);
         User savedUser = repository.save(user);

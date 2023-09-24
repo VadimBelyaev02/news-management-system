@@ -1,5 +1,6 @@
 package com.vadim.userservice.config;
 
+
 import com.vadim.userservice.security.jwt.JwtTokenConfigurer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -47,4 +48,6 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
+
+
 }
