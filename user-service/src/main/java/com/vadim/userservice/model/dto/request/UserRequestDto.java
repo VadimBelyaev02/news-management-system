@@ -11,7 +11,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.UUID;
 
 @Builder
@@ -22,5 +24,5 @@ public class UserRequestDto {
 
     private String username;
     private String email;
-    private String avatar;
+    private MultipartFile avatar;
 }

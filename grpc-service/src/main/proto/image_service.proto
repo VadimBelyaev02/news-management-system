@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package com.vadim.imageservice;
+
+option java_package = "com.vadim.imageservice";
+//option java_multiple_files = true;
+message UploadImageRequest {
+  bytes image = 1;
+  string filename = 2;
+}
+
+message UploadImageResponse {
+  bool success = 1;
+  string message = 2;
+  string imageUrl = 3;
+}
+
+message DeletePhotoRequest {
+  string filename = 1;
+}
+
+message DeletePhotoResponse {
+  string message = 1;
+  bool success = 2;
+}
+
+service ImageService {
+  rpc UploadImage(UploadImageRequest) returns (UploadImageResponse);
+  rpc DeletePhoto(DeletePhotoRequest) returns (DeletePhotoResponse);
+}

@@ -1,5 +1,9 @@
 package com.vadim.userservice.config;
 
+import net.devh.boot.grpc.client.channelfactory.GrpcChannelConfigurer;
+import net.devh.boot.grpc.client.channelfactory.GrpcChannelFactory;
+import net.devh.boot.grpc.client.config.GrpcChannelProperties;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -14,6 +18,12 @@ import java.util.Properties;
 
 @Configuration
 public class AppConfig {
+//
+//    @Bean
+//    public GrpcChannelFactory grpcChannelFactory(GrpcChannelProperties properties,
+//                                                 ObjectProvider<GrpcChannelConfigurer> configurers) {
+//        return new GrpcChannelFactory(properties, configurers.orderedStream());
+//    }
 //
 //    @Bean("fuckingRedisTemplate")
 //    public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory connectionFactory) {

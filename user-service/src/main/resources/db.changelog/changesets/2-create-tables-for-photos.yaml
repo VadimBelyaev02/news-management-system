@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2
+      author: Vadim
+      comment: Create table "photos"
+      changes:
+        - createTable:
+            tableName: photos
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: url
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: uuid
+                  constraints:
+                    foreignKeyName: photos_users_id_fk
+                    referencedColumnNames: id
+                    referencedTableName: users
+                    nullable: false
+              - column:
+                  name: is_avatar
+                  type: boolean
+                  constraints:
+                    nullable: false
