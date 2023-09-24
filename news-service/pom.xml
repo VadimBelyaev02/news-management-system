@@ -75,10 +75,6 @@
             <version>2.14.0.RELEASE</version>
         </dependency>
 
-        <dependency>
-            <groupId></groupId>
-            <artifactId></artifactId>
-        </dependency>
 
 
 
