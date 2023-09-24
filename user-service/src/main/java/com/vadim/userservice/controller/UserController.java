@@ -35,7 +35,7 @@ public class UserController {
     @PostMapping("/upload")
     public String test(@RequestParam MultipartFile image) throws IOException {
 //        int port = 9090;
-//        System.out.println(image.getOriginalFilename());
+        System.out.println(image.getOriginalFilename());
 //
 //        ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
 //                .usePlaintext()

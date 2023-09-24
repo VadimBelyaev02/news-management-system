@@ -8,7 +8,4 @@ import org.mapstruct.Mapping;
 @Mapper
 public interface PhotoMapper {
 
-    @Mapping(target = "url", ignore = true)
-    @Mapping(target = "isAvatar", source = "isAvatar")
-    Photo toEntity(PhotoRequestDto requestDto);
 }
