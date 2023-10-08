@@ -1,6 +1,7 @@
 package com.vadim.newsservice.service.impl;
 
 import com.vadim.newsservice.aop.annotations.Log;
+import com.vadim.newsservice.exception.AccessDeniedException;
 import com.vadim.newsservice.exception.NotFoundException;
 import com.vadim.newsservice.model.dto.request.NewsRequestDto;
 import com.vadim.newsservice.model.dto.response.NewsResponseDto;
@@ -8,6 +9,7 @@ import com.vadim.newsservice.model.dto.response.PageResponse;
 import com.vadim.newsservice.model.entity.News;
 import com.vadim.newsservice.model.mapper.NewsMapper;
 import com.vadim.newsservice.repository.NewsRepository;
+import com.vadim.newsservice.service.AuthenticationService;
 import com.vadim.newsservice.service.NewsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
@@ -20,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.UUID;
 
-import static com.vadim.newsservice.utils.constants.NewsConstants.NEWS_NOT_FOUND_BY_ID;
+import static com.vadim.newsservice.utils.constants.NewsConstants.*;
 
 @Log
 @Service
@@ -29,6 +31,7 @@ public class NewsServiceImpl implements NewsService {
 
     private final NewsRepository repository;
     private final NewsMapper mapper;
+    private final AuthenticationService authenticationService;
 
     @Override
     @Transactional(readOnly = true)
@@ -54,6 +57,9 @@ public class NewsServiceImpl implements NewsService {
     @Transactional
     @CachePut(value = "news", key = "#result.id()")
     public NewsResponseDto save(NewsRequestDto requestDto, String token) {
+        if (!authenticationService.canCreateNews(token)) {
+            throw new AccessDeniedException(NO_ACCESS_TO_CREATE_NEWS);
+        }
         News news = mapper.toEntity(requestDto);
         News savedNews = repository.save(news);
         return mapper.toResponseDto(savedNews);
@@ -63,6 +69,9 @@ public class NewsServiceImpl implements NewsService {
     @Transactional
     @CachePut(value = "news", key = "#id")
     public NewsResponseDto update(UUID id, NewsRequestDto newsDtoRequest, String token) {
+        if (!authenticationService.canModifyNews(newsDtoRequest.getUsername(), token)) {
+            throw new AccessDeniedException(NO_ACCESS_TO_UPDATE_NEWS);
+        }
         News news = repository.findById(id).orElseThrow(
                 () -> new NotFoundException(String.format(NEWS_NOT_FOUND_BY_ID, id))
         );
@@ -74,6 +83,7 @@ public class NewsServiceImpl implements NewsService {
     @Transactional
     @CacheEvict(value = "news", key = "#id")
     public void deleteById(UUID id, String token) {
+        //if (!authenticationService.canDeleteNews(token))
         if (!repository.existsById(id)) {
             throw new NotFoundException(String.format(NEWS_NOT_FOUND_BY_ID, id));
         }

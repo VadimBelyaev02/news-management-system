@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.cglib.core.Local;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,8 +15,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
-@Table(name = "comments")
 @Entity
+@Table(name = "comments")
 public class Comment {
 
     @Id

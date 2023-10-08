@@ -1,6 +1,5 @@
 package com.vadim.newsservice.service;
 
-import com.vadim.newsservice.model.criteria.NewsCriteria;
 import com.vadim.newsservice.model.dto.request.NewsRequestDto;
 import com.vadim.newsservice.model.dto.response.NewsResponseDto;
 import com.vadim.newsservice.model.dto.response.PageResponse;

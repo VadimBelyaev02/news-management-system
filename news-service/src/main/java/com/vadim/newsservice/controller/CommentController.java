@@ -1,6 +1,7 @@
 package com.vadim.newsservice.controller;
 
 
+import com.vadim.newsservice.aop.annotations.Log;
 import com.vadim.newsservice.model.criteria.CommentCriteria;
 import com.vadim.newsservice.model.dto.request.CommentRequestDto;
 import com.vadim.newsservice.model.dto.response.ApiResponse;
@@ -19,6 +20,7 @@ import java.util.UUID;
 
 import static com.vadim.newsservice.utils.constants.CommentConstants.COMMENT_API_PATH;
 
+@Log
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(COMMENT_API_PATH)
@@ -40,7 +42,6 @@ public class CommentController {
     @GetMapping
     public ResponseEntity<ApiResponse<PageResponse<CommentResponseDto>>> getAllComments(
             Pageable pageable,
-        //    @RequestBody(required = false) CommentCriteria criteria
             @RequestParam(required = false, name = "text") String text,
             @RequestParam(required = false, name = "username") String username
     ) {
@@ -48,10 +49,8 @@ public class CommentController {
                 .text(text)
                 .username(username)
                 .build();
-        criteria = null;
         PageResponse<CommentResponseDto> response = Objects.isNull(criteria) ? service.getAll(pageable)
                 : service.getAllByCriteria(pageable, criteria);
-
 
         return ApiResponse.ok(
                 "All comments",
