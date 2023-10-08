@@ -6,6 +6,7 @@ import com.vadim.newsservice.client.model.dto.UserResponseDto;
 import com.vadim.newsservice.client.model.enums.Permission;
 import com.vadim.newsservice.exception.NotFoundException;
 import com.vadim.newsservice.model.dto.response.ApiResponse;
+import com.vadim.newsservice.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ import java.util.Optional;
 @Log
 @Service
 @RequiredArgsConstructor
-public class AuthenticationServiceImpl {
+public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final UserFeignClient userFeignClient;
 
@@ -37,7 +38,7 @@ public class AuthenticationServiceImpl {
 
     private UserResponseDto getUser(String token) {
         return Optional.ofNullable(userFeignClient.getUserByToken(token).getBody())
-                .orElseThrow(() -> new NotFoundException(""))
+                .orElseThrow(() -> new NotFoundException("User wasn't found by token = " + token))
                 .getData();
     }
 
