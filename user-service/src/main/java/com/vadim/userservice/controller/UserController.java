@@ -57,7 +57,13 @@ public class UserController {
 
     @GetMapping("/token/{token}")
     public ResponseEntity<ApiResponse<UserResponseDto>> getUserByToken(@PathVariable("token") String token) {
-        UserResponseDto userResponseDto = userService.get
+        UserResponseDto userResponse = jwtTokenService.getUserByToken(token);
+
+        return ApiResponse.ok(
+                "User with username = " + userResponse.username(),
+                USER_API_PATH,
+                userResponse
+        );
     }
 
     @GetMapping("/{userId}")

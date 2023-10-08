@@ -11,11 +11,14 @@ import com.vadim.userservice.model.mapper.UserMapper;
 import com.vadim.userservice.repository.UserRepository;
 import com.vadim.userservice.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static com.vadim.userservice.util.constants.UserConstants.USER_NOT_FOUND_BY_USERNAME;
 
@@ -38,8 +41,11 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public PageResponse<UserResponseDto> getAll(Pageable pageable, UserCriteria userCriteria) {
+        List<UserResponseDto> users = repository.findAll(pageable).stream()
+                .map(mapper::toResponseDto)
+                .toList();
 
-        return null;
+        return PageResponse.response(pageable, users);
     }
 
     @Override
