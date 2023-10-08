@@ -77,8 +77,9 @@ public class AuthServiceImpl implements AuthService {
 
         User savedUser = userRepository.save(user);
         String code = String.valueOf(UUID.randomUUID());
-        mailSender.sendConfirmationButton(savedUser.getEmail(), "NEWS email confirmation", code);
-        redisTemplate.opsForValue().set(code, savedUser.getUsername());
+        // it's not gonna send an email due to the fact that google deleted the account which used to send emails
+        //   mailSender.sendConfirmationButton(savedUser.getEmail(), "NEWS email confirmation", code);
+        //redisTemplate.opsForValue().set(code, savedUser.getUsername());
         return mapper.toResponseDto(savedUser);
     }
 

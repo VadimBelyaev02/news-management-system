@@ -7,6 +7,7 @@ import com.vadim.userservice.model.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import com.vadim.userservice.model.enums.UserStatus;
 
 @Mapper
 public interface UserMapper {
@@ -15,7 +16,8 @@ public interface UserMapper {
 
     @Mapping(target = "createdDate", expression = "java(java.time.LocalDateTime.now())")
     @Mapping(target = "role", expression = "java(com.vadim.userservice.model.enums.UserRole.SUBSCRIBER)")
-    @Mapping(target = "status", expression = "java(com.vadim.userservice.model.enums.UserStatus.NOT_ACTIVE)")
+  //  @Mapping(target = "status", expression = "java(com.vadim.userservice.model.enums.UserStatus.NOT_ACTIVE)")
+    @Mapping(target = "status", expression = "java(com.vadim.userservice.model.enums.UserStatus.ACTIVE)") // because registration is unavailable
     User toEntity(RegistrationRequestDto requestDto);
 
     UserResponseDto toResponseDto(User user);

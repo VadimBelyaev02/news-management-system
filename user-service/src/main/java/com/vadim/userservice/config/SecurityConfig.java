@@ -39,8 +39,8 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/**").permitAll()
 
                 .anyRequest().authenticated()
- ;         //      .and()
-        //        .apply(jwtTokenConfigurer);
+                .and()
+                .apply(jwtTokenConfigurer);
         return httpSecurity.build();
     }
 

@@ -62,30 +62,4 @@ public class AppConfig {
 //        return template;
 //    }
 
-
-    /*
-    spring.mail.host=smtp.gmail.com
-spring.mail.port=587
-spring.mail.username=sendermail83@gmail.com
-spring.mail.password=ecqxfgeuetrlcsxi
-spring.mail.properties.mail.smtp.auth=true
-spring.mail.properties.mail.smtp.starttls.enable=true
-     */
-//    @Bean
-//    public JavaMailSender javaMailSender() {
-//        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-//        Properties properties = new Properties();
-//        properties.setProperty("spring.mail.properties.mail.smtp.auth", "true");
-//        properties.setProperty("spring.mail.properties.mail.smtp.starttls.enable", "true");
-//
-//        // Установите настройки для JavaMailSender
-//        mailSender.setHost("smtp.gmail.com");
-//        mailSender.setPort(587);
-//        mailSender.setUsername("sendermail720@gmail.com");
-//        mailSender.setPassword("ejuhwdplhgsvgeqz");
-//;
-//        mailSender.setJavaMailProperties(properties);
-//        mailSender.getJavaMailProperties().put("mail.debug", "true");
-//        return mailSender;
-//    }
 }
