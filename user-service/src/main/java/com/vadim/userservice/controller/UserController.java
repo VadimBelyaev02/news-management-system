@@ -1,17 +1,12 @@
 package com.vadim.userservice.controller;
 
-import com.google.protobuf.ByteString;
-import com.vadim.imageservice.ImageServiceGrpc;
-import com.vadim.imageservice.ImageServiceOuterClass;
 import com.vadim.userservice.model.criteria.UserCriteria;
 import com.vadim.userservice.model.dto.request.UserRequestDto;
 import com.vadim.userservice.model.dto.response.ApiResponse;
 import com.vadim.userservice.model.dto.response.PageResponse;
 import com.vadim.userservice.model.dto.response.UserResponseDto;
+import com.vadim.userservice.service.JwtTokenService;
 import com.vadim.userservice.service.UserService;
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
-import io.grpc.netty.shaded.io.grpc.netty.GrpcSslContexts;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 import static com.vadim.userservice.util.constants.UserConstants.USER_API_PATH;
 
@@ -30,7 +24,8 @@ import static com.vadim.userservice.util.constants.UserConstants.USER_API_PATH;
 @RequestMapping(USER_API_PATH)
 public class UserController {
 
-    private final UserService service;
+    private final UserService userService;
+    private final JwtTokenService jwtTokenService;
 
     @PostMapping("/upload")
     public String test(@RequestParam MultipartFile image) throws IOException {
@@ -60,9 +55,14 @@ public class UserController {
         return null;
     }
 
+    @GetMapping("/token/{token}")
+    public ResponseEntity<ApiResponse<UserResponseDto>> getUserByToken(@PathVariable("token") String token) {
+        UserResponseDto userResponseDto = userService.get
+    }
+
     @GetMapping("/{userId}")
     public ResponseEntity<ApiResponse<UserResponseDto>> getUser(@PathVariable UUID userId) {
-        UserResponseDto userResponseDto = service.getById(userId);
+        UserResponseDto userResponseDto = userService.getById(userId);
 
         return ApiResponse.ok(
                 "User with id = " + userId,
@@ -74,7 +74,7 @@ public class UserController {
     @GetMapping
     public ResponseEntity<ApiResponse<PageResponse<UserResponseDto>>> getAllUsers(Pageable pageable,
                                                                                   @RequestBody(required = false) UserCriteria userCriteria) {
-        PageResponse<UserResponseDto> pageResponse = service.getAll(pageable, userCriteria);
+        PageResponse<UserResponseDto> pageResponse = userService.getAll(pageable, userCriteria);
 
         return ApiResponse.ok(
                 "All users",
@@ -86,7 +86,7 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<UserResponseDto>> postUsers(@RequestBody @Valid UserRequestDto requestDto) {
-        UserResponseDto userResponseDto = service.save(requestDto);
+        UserResponseDto userResponseDto = userService.save(requestDto);
 
         return ApiResponse.created(
                 "User with id = " + userResponseDto.id() + " was created",
@@ -98,7 +98,7 @@ public class UserController {
     @PutMapping("/{userId}")
     public ResponseEntity<ApiResponse<UserResponseDto>> putUsers(@RequestBody @Valid UserRequestDto requestDto,
                                                                  @PathVariable UUID userId) {
-        UserResponseDto userResponseDto = service.update(userId, requestDto);
+        UserResponseDto userResponseDto = userService.update(userId, requestDto);
 
         return ApiResponse.ok(
                 "Comment with id = " + userId + " was updated",
@@ -109,7 +109,7 @@ public class UserController {
 
     @DeleteMapping("/{userId}")
     public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable UUID userId) {
-        service.deleteById(userId);
+        userService.deleteById(userId);
 
         return ApiResponse.noContent(
                 "User with id = " + userId + " was deleted",

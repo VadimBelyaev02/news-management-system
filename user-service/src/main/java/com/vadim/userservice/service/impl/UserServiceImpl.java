@@ -17,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
+import static com.vadim.userservice.util.constants.UserConstants.USER_NOT_FOUND_BY_USERNAME;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -43,8 +45,6 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserResponseDto save(UserRequestDto userRequestDto) {
-       // userRequestDto.getPhotos().stream()
-
         User user = mapper.toEntity(userRequestDto);
         User savedUser = repository.save(user);
         return mapper.toResponseDto(savedUser);
@@ -67,5 +67,14 @@ public class UserServiceImpl implements UserService {
             throw new UserNotFoundException(userId);
         }
         repository.deleteById(userId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public UserResponseDto getByUsername(String username) {
+        User user = repository.findByUsername(username).orElseThrow(
+                () -> new UserNotFoundException(USER_NOT_FOUND_BY_USERNAME, username)
+        );
+        return mapper.toResponseDto(user);
     }
 }

@@ -20,4 +20,6 @@ public interface UserService {
     UserResponseDto update(UUID userId, UserRequestDto userRequestDto);
 
     void deleteById(UUID userId);
+
+    UserResponseDto getByUsername(String username);
 }
