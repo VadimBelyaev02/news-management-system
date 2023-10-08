@@ -1,33 +1,34 @@
 package com.vadim.userservice.config;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import net.devh.boot.grpc.client.channelfactory.GrpcChannelConfigurer;
-import net.devh.boot.grpc.client.channelfactory.GrpcChannelFactory;
-import net.devh.boot.grpc.client.config.GrpcChannelProperties;
-import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.web.servlet.MultipartProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.system.ApplicationTemp;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.core.env.Environment;
+import org.springframework.util.unit.DataSize;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.Properties;
-
 @Configuration
+        //@EnableConfigurationProperties(MultipartProperties.class)
 public class AppConfig {
 
     @Bean
     public WebClient webClient() {
         return WebClient.builder().build();
     }
+
+
+//    @Bean
+//    @ConditionalOnMissingBean
+//    @ConditionalOnProperty(prefix = "spring.servlet.multipart", name = "enabled", matchIfMissing = true)
+//    public ApplicationTemp applicationTemp(Environment environment, MultipartProperties multipartProperties) {
+//        DataSize size = multipartProperties.getMaxFileSize();
+//        String location = multipartProperties.getLocation();
+//        return new ApplicationTemp(environment, location, size);
+//    }
 
 //    @Bean
 //    public ObjectMapper objectMapper() {
