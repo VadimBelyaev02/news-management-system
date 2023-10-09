@@ -16,6 +16,7 @@ import com.vadim.userservice.security.jwt.JwtTokenProvider;
 import com.vadim.userservice.service.AuthService;
 import com.vadim.userservice.service.PhotoService;
 import com.vadim.userservice.service.mail.MailSender;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,37 +30,14 @@ import java.util.UUID;
 import static com.vadim.userservice.util.constants.UserConstants.*;
 
 @Service
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
-    private final MailSender mailSender;
     private final PasswordEncoder encoder;
     private final UserMapper mapper;
-    private final RedisTemplate<String, String> redisTemplate;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider tokenProvider;
-    private final PhotoService photoService;
-    private final PhotoRepository photoRepository;
-
-    public AuthServiceImpl(UserRepository userRepository,
-                           MailSender mailSender,
-                           PasswordEncoder encoder,
-                           UserMapper mapper,
-                           RedisTemplate<String, String> redisTemplate,
-                           AuthenticationManager authenticationManager,
-                           JwtTokenProvider tokenProvider,
-                           PhotoService photoService, PhotoRepository photoRepository) {
-        this.userRepository = userRepository;
-        this.mailSender = mailSender;
-        this.encoder = encoder;
-        this.mapper = mapper;
-        this.redisTemplate = redisTemplate;
-        this.authenticationManager = authenticationManager;
-        this.tokenProvider = tokenProvider;
-        this.photoService = photoService;
-        this.photoRepository = photoRepository;
-    }
 
 
     @Override
@@ -87,14 +65,15 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public UserResponseDto confirmRegistration(String code) {
-        String username = Optional.ofNullable(redisTemplate.opsForValue().get(code)).orElseThrow(
-                RecordNotFoundException::new
-        );
-        User user = userRepository.findByUsername(username).orElseThrow(
-                () -> new UserNotFoundException("User with username = " + username + " is not found")
-        );
-        user.setStatus(UserStatus.ACTIVE);
-        return mapper.toResponseDto(user);
+//        String username = Optional.ofNullable(redisTemplate.opsForValue().get(code)).orElseThrow(
+//                RecordNotFoundException::new
+//        );
+//        User user = userRepository.findByUsername(username).orElseThrow(
+//                () -> new UserNotFoundException("User with username = " + username + " is not found")
+//        );
+//        user.setStatus(UserStatus.ACTIVE);
+//        return mapper.toResponseDto(user);
+        return null;
     }
 
     @Override

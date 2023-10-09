@@ -73,4 +73,11 @@ public class ApiResponse<T> {
         return of(message, path, HttpStatus.BAD_REQUEST, null);
     }
 
+    public static <T> ResponseEntity<ApiResponse<T>> forbidden(
+            final String message,
+            final String path
+    ) {
+        return of(message, path, HttpStatus.FORBIDDEN, null);
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.vadim.userservice.exception.handler;
 
+import com.vadim.userservice.exception.AccessDeniedException;
 import com.vadim.userservice.exception.DuplicateRecordException;
 import com.vadim.userservice.exception.MailSendingException;
 import com.vadim.userservice.exception.RecordNotFoundException;
@@ -23,18 +24,19 @@ public class GlobalControllerAdvice {
         );
     }
 
-    //    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-//    public ResponseEntity<ApiResponseDto<?>> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException exception) {
-//        final ApiResponseDto<?> apiResponseDto = ApiResponseDto.badApiResponse(
-//                exception.getMessage()
-//        );
-//        return new ResponseEntity<>(apiResponseDto, HttpStatus.BAD_REQUEST);
-//    }
-//
     @ExceptionHandler(RecordNotFoundException.class)
     public ResponseEntity<ApiResponse<Void>> handleNotFoundException(RecordNotFoundException exception,
                                                                      HttpServletRequest servletRequest) {
         return ApiResponse.notFound(
+                exception.getMessage(),
+                servletRequest.getServletPath()
+        );
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ApiResponse<Void>> handleAccessDeniedException(AccessDeniedException exception,
+                                                                     HttpServletRequest servletRequest) {
+        return ApiResponse.forbidden(
                 exception.getMessage(),
                 servletRequest.getServletPath()
         );

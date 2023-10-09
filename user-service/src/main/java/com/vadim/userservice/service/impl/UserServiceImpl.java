@@ -1,6 +1,5 @@
 package com.vadim.userservice.service.impl;
 
-import com.vadim.userservice.client.PhotoFeignClient;
 import com.vadim.userservice.exception.UserNotFoundException;
 import com.vadim.userservice.model.criteria.UserCriteria;
 import com.vadim.userservice.model.dto.request.UserRequestDto;
@@ -11,14 +10,12 @@ import com.vadim.userservice.model.mapper.UserMapper;
 import com.vadim.userservice.repository.UserRepository;
 import com.vadim.userservice.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static com.vadim.userservice.util.constants.UserConstants.USER_NOT_FOUND_BY_USERNAME;
 
