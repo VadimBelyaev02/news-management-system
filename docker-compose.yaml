@@ -1,0 +1,8 @@
+version: '3.9'
+
+services:
+  eureka-server:
+    build: eureka-server/Dockerfile
+    image: vadimbelyaev394875983474892/news-management-system-eureka-server
+    ports:
+      - "8761:8761"
