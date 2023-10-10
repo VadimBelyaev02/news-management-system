@@ -2,7 +2,112 @@ version: '3.9'
 
 services:
   eureka-server:
-    build: eureka-server/Dockerfile
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8761/eureka || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    build:
+      dockerfile: eureka-server/Dockerfile
     image: vadimbelyaev394875983474892/news-management-system-eureka-server
     ports:
       - "8761:8761"
+    environment:
+      EUREKA_SERVER_HOSTNAME: localhost
+      EUREKA_SERVER_PORT: 8761
+      SPRING_PROFILE_ACTIVE: prod
+    entrypoint: [ "/app/wait-for-it.sh", "--strict", "--timeout=60", "config-server:8088", "--", "java", "-jar", "/app/app.jar" ]
+    networks:
+      - postgresql_network
+    depends_on:
+      - config_server
+
+  config-server:
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f https://:8761/eureka || exit 1" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    build:
+      dockerfile: config-server/Dockerfile
+    image: vadimbelyaev394875983474892/news-management-system-config-server
+    ports:
+      - "8088:8088"
+    environment:
+      EUREKA_SERVER_HOSTNAME: localhost
+      EUREKA_SERVER_PORT: 8761
+      SPRING_PROFILE_ACTIVE: prod
+    entrypoint: [ "/app/wait-for-it.sh", "--strict", "--timeout=60", "config-server:8088", "--", "java", "-jar", "/app/app.jar" ]
+    networks:
+      - postgresql_network
+    depends_on:
+      - config_server
+
+  user-server:
+    build:
+      dockerfile: config-server/Dockerfile
+    image: vadimbelyaev394875983474892/news-management-system-config-server
+    ports:
+      - "8081:8081"
+    environment:
+      EUREKA_SERVER_HOSTNAME: localhost
+      EUREKA_SERVER_PORT: 8761
+      SPRING_PROFILE_ACTIVE: prod
+
+    entrypoint: [ "/app/wait-for-it.sh", "--strict", "--timeout=60", "config-server:8088", "--", "java", "-jar", "/app/app.jar" ]
+    networks:
+      - postgresql_network
+    depends_on:
+      - config_server
+
+  news-service:
+    build:
+      dockerfile: news-service/Dockerfile
+    image: vadimbelyaev394875983474892/news-management-system-news-service
+    ports:
+      - "8080:8080"
+    environment:
+      EUREKA_SERVER_HOSTNAME: localhost
+      EUREKA_SERVER_PORT: 8761
+      SPRING_PROFILE_ACTIVE: prod
+
+    entrypoint: [ "/app/wait-for-it.sh", "--strict", "--timeout=60", "config-server:8088", "--", "java", "-jar", "/app/app.jar" ]
+    networks:
+      - postgresql_network
+    depends_on:
+      - config-server
+    volumes:
+      - data_volume:
+
+  api-gateway:
+    build:
+      dockerfile: api-gateway/Dockerfile
+    image: vadimbelyaev394875983474892/news-management-system-api-gateway
+    ports:
+      - "8765:8765"
+    environment:
+      EUREKA_SERVER_HOSTNAME: localhost
+      EUREKA_SERVER_PORT: 8761
+      SPRING_PROFILE_ACTIVE: prod
+    entrypoint: [ "/app/wait-for-it.sh", "--strict", "--timeout=60", "config-server:8088", "--", "java", "-jar", "/app/app.jar" ]
+    networks:
+      - postgresql_network
+    depends_on:
+      - config-server
+
+  postgres:
+    image: postgres:13.3
+    environment:
+      POSTGRES_DB: "habrdb"
+      POSTGRES_USER: "habrpguser"
+      POSTGRES_PASSWORD: "pgpwd4habr"
+    volumes:
+      - .:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+
+networks:
+  postgresql_network:
+
+volumes:
+  data_volume:

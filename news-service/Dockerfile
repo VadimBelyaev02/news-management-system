@@ -1,8 +1,18 @@
-FROM openjdk:17-slim
+FROM maven:3.9.4-eclipse-temurin-17-alpine as build
 
 WORKDIR /app
 
-COPY target/news-service-1.0.0.jar /app/app.jar
-COPY wait-for-it.sh /app
+COPY pom.xml /app
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+RUN mvn dependency:resolve
+
+COPY src /app
+
+RUN mvn clean package
+
+FROM eclipse-temurin:17-jre-alpine
+
+COPY --from=build /app/target/news-service-1.0.0.jar .
+COPY wait-for-it.sh app
+
+ENTRYPOINT ["java", "-jar", "/app/target/news-service-1.0.0.jar"]
